@@ -1,0 +1,65 @@
+
+<div class="container">
+  <h1 class="heading">Contacts</h1>
+  
+  <!-- Search Bar -->
+  <div>
+    <input
+      type="text"
+      [(ngModel)]="searchTerm"
+      placeholder="Search contacts..."
+      class="search-input"
+    >
+  </div>
+
+  <!-- Contact Form -->
+  <form [formGroup]="contactForm" (ngSubmit)="isEditing ? updateContact() : addContact()" class="contact-form">
+    <div class="form-grid">
+      <div class="form-group">
+        <label class="form-label">Name:</label>
+        <input type="text" formControlName="name" class="form-input">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email:</label>
+        <input type="email" formControlName="email" class="form-input">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Phone:</label>
+        <input type="tel" formControlName="phone_number" class="form-input">
+      </div>
+      <div>
+        <label class="checkbox-label">
+          <input type="checkbox" formControlName="is_favourite" class="checkbox-input">
+          Favorite
+        </label>
+      </div>
+    </div>
+    <button type="submit" [disabled]="!contactForm.valid" class="btn btn-primary">
+      {{ isEditing ? 'Update Contact' : 'Add Contact' }}
+    </button>
+  </form>
+
+  <!-- Contacts List -->
+  <div class="contacts-grid">
+    <div *ngFor="let contact of filteredContacts" class="contact-card">
+      <div class="card-header">
+        <div>
+          <h3 class="contact-name">{{ contact.name }}</h3>
+          <p class="contact-info">{{ contact.email }}</p>
+          <p class="contact-info">{{ contact.phone_number }}</p>
+        </div>
+        <button (click)="toggleFavorite(contact)" class="favorite-btn">
+          {{ contact.is_favourite ? '★' : '☆' }}
+        </button>
+      </div>
+      <div class="card-actions">
+        <button (click)="editContact(contact)" class="btn btn-success">
+          Edit
+        </button>
+        <button (click)="deleteContact(contact.id)" class="btn btn-danger">
+          Delete
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
